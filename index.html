@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
-<title>Repostería Gema 🧁 | Pedidos</title>
+<title>Gema Pastelería | Pedidos</title>
 
 <!-- Google Fonts: Poppins (títulos) y Nunito (texto general) -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -12,29 +12,36 @@
 
 <style>
   /* ======================================================
-     VARIABLES DE DISEÑO (paleta pastel clara para kiosco)
+     VARIABLES DE DISEÑO (paleta pastel clara, estilo kiosco)
      ====================================================== */
   :root{
-    --color-fondo: #FFF9F3;        /* crema muy claro de fondo */
+    --color-fondo: #FFF9F3;        /* crema claro de fondo */
     --color-acento: #FFC59E;       /* naranja pastel principal */
-    --color-acento-suave: #FFE6D3; /* naranja pastel suave */
-    --color-durazno-rosa: #FFD9CF; /* durazno / rosa pastel */
-    --color-texto: #4A4A4A;        /* gris oscuro suave para textos */
-    --color-texto-suave: #8a8178;  /* gris más claro para subtítulos */
+    --color-acento-fuerte: #E8793A;/* naranja fuerte: bordes seleccionados, CTA */
+    --color-acento-oscuro: #B85A24;/* para texto sobre fondos claros */
+    --color-durazno: #FFE6D3;      /* durazno pastel: fondo de selección */
+    --color-borde-suave: #E9DFD3;  /* borde gris claro de opciones no elegidas */
+    --color-marca: #5C3A21;        /* marrón chocolate del logo: títulos y texto importante */
+    --color-texto: #2E2A26;        /* texto principal, buen contraste */
+    --color-texto-suave: #8A7A6C;  /* subtítulos / texto secundario */
     --color-blanco: #FFFFFF;
-    --color-exito: #CFEFD9;        /* verde pastel para confirmaciones */
-    --sombra-suave: 0 8px 20px rgba(74,74,74,0.08);
-    --sombra-boton: 0 6px 14px rgba(255,197,158,0.55);
-    --radio-grande: 24px;
-    --radio-mediano: 18px;
-    --radio-chico: 12px;
+    --color-exito: #D8F1DF;
+    --color-exito-texto: #276B43;
+    --color-error-texto: #B23B2E;
+    --sombra-suave: 0 6px 18px rgba(46,42,38,0.08);
+    --sombra-hover: 0 14px 28px rgba(46,42,38,0.14);
+    --sombra-boton: 0 10px 22px rgba(232,121,58,0.35);
+    --radio-grande: 22px;
+    --radio-mediano: 16px;
+    --radio-chico: 10px;
+    --ancho-contenido: 1100px;
   }
 
   *{ box-sizing: border-box; }
 
   html, body{
     margin:0; padding:0;
-    background: #F3ECE4; /* fondo detrás del "kiosco" en pantallas grandes */
+    background: var(--color-fondo);
     font-family: 'Nunito', sans-serif;
     color: var(--color-texto);
     -webkit-tap-highlight-color: transparent;
@@ -42,205 +49,363 @@
 
   h1,h2,h3,h4, .fuente-titulo{
     font-family: 'Poppins', sans-serif;
+    font-weight: 700;
+    color: var(--color-marca);
   }
 
-  button{ font-family: inherit; cursor: pointer; border: none; outline: none; }
+  button{ font-family: inherit; cursor: pointer; border: none; outline: none; background:none; color:inherit; }
   input, textarea, select{ font-family: inherit; }
+  [data-lucide]{ width:1em; height:1em; }
 
-  /* Contenedor tipo "pantalla de kiosco": mobile-first, se ve como kiosco
-     en pantallas grandes (centrado, con marco) y a pantalla completa en celular */
-  .app-container{
-    max-width: 480px;
+  /* ---------- Encabezado de marca (fijo arriba, ancho completo) ---------- */
+  .topbar{
+    background: linear-gradient(135deg, var(--color-acento) 0%, var(--color-durazno) 100%);
+    padding: 16px 20px;
+  }
+  .topbar-inner{
+    max-width: var(--ancho-contenido);
     margin: 0 auto;
-    min-height: 100vh;
-    background: var(--color-fondo);
+    display:flex;
+    align-items:center;
+    gap: 14px;
+  }
+  .logo-wrap{
+    width: 54px; height: 54px;
+    border-radius: 50%;
+    background: var(--color-blanco);
+    display:flex; align-items:center; justify-content:center;
     position: relative;
-    display: flex;
-    flex-direction: column;
-    overflow-x: hidden;
-  }
-  @media (min-width: 560px){
-    html, body{ display:flex; justify-content:center; }
-    .app-container{
-      min-height: 94vh;
-      margin: 3vh auto;
-      border-radius: 36px;
-      box-shadow: 0 20px 60px rgba(74,74,74,0.25);
-      overflow: hidden;
-    }
-  }
-
-  /* ---------- Encabezado superior de la marca ---------- */
-  .marca-header{
-    background: linear-gradient(135deg, var(--color-acento) 0%, var(--color-durazno-rosa) 100%);
-    padding: 18px 20px 22px;
-    border-radius: 0 0 28px 28px;
+    overflow: hidden;
+    flex-shrink: 0;
     box-shadow: var(--sombra-suave);
-    text-align: center;
-    color: #5a4336;
   }
-  .marca-header h1{
-    margin: 0;
-    font-size: 1.5rem;
-    font-weight: 800;
-    letter-spacing: .5px;
-  }
-  .marca-header p{
-    margin: 4px 0 0;
-    font-size: .85rem;
-    font-weight: 600;
-    opacity: .85;
-  }
+  .logo-wrap i{ width:26px; height:26px; color: var(--color-acento-fuerte); stroke-width: 1.8; }
+  .logo-wrap img{ position:absolute; inset:0; width:100%; height:100%; object-fit:contain; padding:6px; }
+  .marca-texto h1{ margin:0; font-size:1.3rem; color: var(--color-marca); letter-spacing:.2px; }
+  .marca-texto p{ margin:2px 0 0; font-size:.82rem; font-weight:700; color: var(--color-marca); opacity:.75; }
 
-  /* ---------- Contenido principal ---------- */
+  /* ---------- Contenido principal, centrado y ancho en pantallas grandes ---------- */
   #app-content{
-    flex: 1;
-    padding: 18px 16px 110px; /* espacio inferior para la barra fija */
+    max-width: var(--ancho-contenido);
+    margin: 0 auto;
+    padding: 20px 20px 120px;
     animation: fadeIn .35s ease;
   }
 
   @keyframes fadeIn{
-    from{ opacity: 0; transform: translateY(8px); }
+    from{ opacity: 0; transform: translateY(10px); }
     to{ opacity: 1; transform: translateY(0); }
   }
 
   /* ---------- Fila "volver" ---------- */
   .fila-volver{
-    display:flex; align-items:center; gap:10px;
-    margin-bottom: 14px;
+    display:flex; align-items:center; gap:12px;
+    margin-bottom: 18px;
   }
   .btn-volver{
     background: var(--color-blanco);
     color: var(--color-texto);
-    width: 42px; height: 42px;
+    width: 44px; height: 44px;
     border-radius: 50%;
-    font-size: 1.2rem;
     display:flex; align-items:center; justify-content:center;
     box-shadow: var(--sombra-suave);
-    transition: transform .15s ease;
+    transition: transform .15s ease, box-shadow .15s ease;
   }
+  .btn-volver i{ width:20px; height:20px; }
+  .btn-volver:hover{ box-shadow: var(--sombra-hover); transform: translateY(-1px); }
   .btn-volver:active{ transform: scale(0.9); }
   .titulo-pantalla{
-    font-size: 1.15rem;
-    font-weight: 700;
+    font-size: 1.3rem;
     margin: 0;
+  }
+
+  /* ---------- HERO de inicio ---------- */
+  .hero{
+    position: relative;
+    border-radius: var(--radio-grande);
+    overflow: hidden;
+    min-height: 220px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding: 32px 20px;
+    background: linear-gradient(135deg, var(--color-acento) 0%, var(--color-durazno) 100%);
+    box-shadow: var(--sombra-suave);
+    margin-bottom: 26px;
+  }
+  .hero-contenido{
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    max-width: 420px;
+    text-align: center;
+    background: rgba(255,249,243,0.92);
+    border-radius: var(--radio-grande);
+    padding: 26px 28px;
+    box-shadow: 0 10px 26px rgba(92,58,33,0.16);
+  }
+  .hero-logo{
+    display:block;
+    width: 100%;
+    max-width: 220px;
+    height: auto;
+    object-fit: contain;
+    margin: 0 auto 14px;
+  }
+  @media (min-width: 700px){
+    .hero-logo{ max-width: 260px; }
+  }
+  .hero-contenido h2{ margin:0 0 6px; font-size: 1.5rem; }
+  .hero-contenido p{ margin:0; font-weight:700; font-size:.95rem; color: var(--color-marca); opacity:.85; }
+
+  .intro-categorias{ text-align:center; margin: 4px 0 20px; }
+  .intro-categorias h3{ margin:0 0 4px; font-size:1.15rem; }
+  .intro-categorias p{ margin:0; color: var(--color-texto-suave); font-weight:700; font-size:.88rem; }
+
+  /* ---------- Fotos con respaldo automático (icono si no hay imagen) ---------- */
+  .foto-respaldo{
+    position: relative;
+    overflow: hidden;
+    background: linear-gradient(135deg, var(--color-acento), var(--color-durazno));
+    display:flex; align-items:center; justify-content:center;
+  }
+  .foto-respaldo i{
+    width: 34%; height: 34%;
+    max-width: 48px; max-height: 48px;
+    color: #a65a28;
+    opacity: .85;
+    stroke-width: 1.5;
+  }
+  .foto-respaldo img{
+    position:absolute; inset:0;
+    width:100%; height:100%;
+    object-fit: cover;
   }
 
   /* ---------- Tarjetas de categoría (inicio) ---------- */
   .grid-categorias{
-    display:grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 14px;
-    margin-top: 6px;
+    display:flex; flex-wrap:wrap;
+    gap: 20px;
+    justify-content: center;
   }
   .tarjeta-categoria{
+    flex: 1 1 230px;
+    max-width: 260px;
     background: var(--color-blanco);
     border-radius: var(--radio-grande);
     box-shadow: var(--sombra-suave);
-    padding: 20px 10px;
-    text-align:center;
-    transition: transform .15s ease, box-shadow .15s ease;
-    display:flex; flex-direction:column; align-items:center; gap:8px;
+    overflow: hidden;
+    text-align:left;
+    display:flex; flex-direction:column;
+    transition: transform .18s ease, box-shadow .18s ease;
   }
-  .tarjeta-categoria:active{ transform: scale(0.95); }
-  .tarjeta-categoria .emoji-placeholder{
-    width: 72px; height: 72px;
-    border-radius: 20px;
-    background: var(--color-acento-suave);
-    display:flex; align-items:center; justify-content:center;
-    font-size: 2.1rem;
+  @media (hover:hover){
+    .tarjeta-categoria:hover{ transform: translateY(-5px); box-shadow: var(--sombra-hover); }
   }
-  .tarjeta-categoria span{
-    font-weight: 700;
-    font-size: .95rem;
+  .tarjeta-categoria:active{ transform: scale(0.97); }
+  .tarjeta-categoria .foto-respaldo{ height: 150px; width:100%; }
+  .info-categoria{ padding: 14px 16px 18px; display:flex; flex-direction:column; gap:3px; }
+  .nombre-categoria{ font-weight:800; font-size:1rem; font-family:'Poppins',sans-serif; }
+  .desde-categoria{ font-size:.82rem; color: var(--color-acento-oscuro); font-weight:700; }
+
+  @media (max-width: 639px){
+    .tarjeta-categoria{ flex: 1 1 100%; max-width: 100%; }
   }
 
-  .banner-bienvenida{
-    background: var(--color-acento-suave);
-    border-radius: var(--radio-grande);
-    padding: 16px 18px;
-    margin-bottom: 18px;
-    text-align: center;
-    box-shadow: var(--sombra-suave);
+  /* ---------- Barra de progreso (armador de tortas) ---------- */
+  .progreso-pasos{
+    display:flex; align-items:flex-start;
+    margin-bottom: 22px;
+    overflow-x: auto;
+    padding-bottom: 4px;
   }
-  .banner-bienvenida p{ margin:0; font-weight: 700; }
-  .banner-bienvenida span{ font-size: .82rem; color: var(--color-texto-suave); font-weight: 600; }
+  .paso{ display:flex; flex-direction:column; align-items:center; gap:6px; min-width: 64px; }
+  .paso-circulo{
+    width: 30px; height: 30px;
+    border-radius: 50%;
+    background: var(--color-blanco);
+    border: 2px solid var(--color-borde-suave);
+    color: var(--color-texto-suave);
+    display:flex; align-items:center; justify-content:center;
+    font-weight:800; font-size:.82rem;
+    transition: all .2s ease;
+  }
+  .paso-circulo i{ width:14px; height:14px; }
+  .paso-nombre{ font-size:.72rem; font-weight:700; color: var(--color-texto-suave); white-space:nowrap; }
+  .paso.hecho .paso-circulo{ background: var(--color-acento-fuerte); border-color: var(--color-acento-fuerte); color:#fff; }
+  .paso.hecho .paso-nombre{ color: var(--color-acento-oscuro); }
+  .paso.actual .paso-circulo{ border-color: var(--color-acento-fuerte); box-shadow: 0 0 0 4px rgba(232,121,58,0.18); }
+  .paso.actual .paso-nombre{ color: var(--color-texto); }
+  .paso-linea{
+    flex: 1;
+    height: 2px;
+    background: var(--color-borde-suave);
+    margin: 14px 4px 0;
+    min-width: 20px;
+  }
 
   /* ---------- Secciones genéricas ---------- */
   .seccion{
     background: var(--color-blanco);
     border-radius: var(--radio-grande);
     box-shadow: var(--sombra-suave);
-    padding: 18px;
-    margin-bottom: 16px;
+    padding: 20px;
+    margin-bottom: 18px;
   }
   .seccion h3{
-    margin: 0 0 12px;
+    margin: 0 0 14px;
     font-size: 1rem;
-    display:flex; align-items:center; gap:8px;
+    display:flex; align-items:center; gap:10px;
+  }
+  .seccion h3 i{ width:18px; height:18px; color: var(--color-acento-fuerte); }
+  .paso-num{
+    width: 22px; height: 22px;
+    border-radius: 50%;
+    background: var(--color-durazno);
+    color: var(--color-acento-oscuro);
+    font-size:.78rem; font-weight:800;
+    display:inline-flex; align-items:center; justify-content:center;
+    flex-shrink:0;
   }
 
-  /* ---------- Chips de selección (tamaño / tipo / sabor) ---------- */
+  /* ---------- Opción seleccionable genérica (chip / tarjeta) ---------- */
+  .opcion-seleccionable{
+    position: relative;
+    background: var(--color-blanco);
+    border: 2px solid var(--color-borde-suave);
+    border-radius: var(--radio-mediano);
+    transition: border-color .15s ease, background .15s ease, transform .12s ease, box-shadow .15s ease;
+  }
+  @media (hover:hover){
+    .opcion-seleccionable:hover{ border-color: var(--color-acento); transform: translateY(-2px); }
+  }
+  .opcion-seleccionable:active{ transform: scale(0.96); }
+  .opcion-seleccionable.seleccionado{
+    background: var(--color-durazno);
+    border-color: var(--color-acento-fuerte);
+    box-shadow: var(--sombra-boton);
+  }
+  .check-badge{
+    position: absolute;
+    top: -8px; right: -8px;
+    width: 24px; height: 24px;
+    border-radius: 50%;
+    background: var(--color-acento-fuerte);
+    color: #fff;
+    display:flex; align-items:center; justify-content:center;
+    box-shadow: 0 3px 8px rgba(232,121,58,0.5);
+    animation: popIn .22s ease;
+    z-index: 2;
+  }
+  .check-badge i{ width:14px; height:14px; stroke-width:3; }
+  @keyframes popIn{
+    from{ transform: scale(0); opacity:0; }
+    to{ transform: scale(1); opacity:1; }
+  }
+
+  /* ---------- Chips de tamaño ---------- */
   .grid-chips{
-    display:grid;
-    grid-template-columns: repeat(3, 1fr);
+    display:flex; flex-wrap:wrap;
     gap: 10px;
   }
-  .grid-chips.chips-2col{ grid-template-columns: repeat(2, 1fr); }
   .chip{
-    background: var(--color-acento-suave);
-    border-radius: var(--radio-mediano);
-    padding: 12px 6px;
+    flex: 1 1 100px;
+    max-width: 130px;
+    padding: 12px 8px;
     text-align:center;
     font-weight: 700;
     font-size: .85rem;
     color: var(--color-texto);
-    transition: all .15s ease;
-    border: 2px solid transparent;
+    display:flex; flex-direction:column; gap:4px; align-items:center;
   }
-  .chip small{ display:block; font-weight:600; font-size:.72rem; opacity:.75; margin-top:2px; }
-  .chip.activo{
-    background: var(--color-acento);
-    border-color: #e8935c;
-    transform: scale(1.04);
-    box-shadow: var(--sombra-boton);
+  .chip-tam{ font-weight:800; }
+  .chip-precio{ font-size:.76rem; color: var(--color-acento-oscuro); font-weight:700; }
+
+  /* ---------- Tarjetas de tipo de torta (con foto) ---------- */
+  .grid-tipos{
+    display:flex; flex-wrap:wrap;
+    gap: 14px;
   }
-  .chip:active{ transform: scale(0.95); }
+  .tarjeta-tipo{
+    flex: 1 1 250px;
+    max-width: 320px;
+    display:flex; flex-direction:column;
+    text-align:left;
+    overflow: hidden;
+  }
+  .tarjeta-tipo .foto-respaldo{ height: 110px; border-radius: 13px 13px 0 0; }
+  .info-tipo{ padding: 12px 14px 14px; display:flex; flex-direction:column; gap:3px; }
+  .nombre-tipo{ font-weight:800; font-family:'Poppins',sans-serif; font-size:.95rem; }
+  .desc-tipo{ font-size:.78rem; color: var(--color-texto-suave); font-weight:600; }
+  .precio-tipo{ font-size:.82rem; color: var(--color-acento-oscuro); font-weight:800; margin-top:2px; }
+  @media (max-width: 639px){ .tarjeta-tipo{ flex: 1 1 100%; max-width:100%; } }
+
+  /* ---------- Tarjetas de sabor (con foto pequeña) ---------- */
+  .grid-sabores{
+    display:flex; flex-wrap:wrap;
+    gap: 10px;
+  }
+  .tarjeta-sabor{
+    flex: 1 1 110px;
+    max-width: 140px;
+    display:flex; flex-direction:column; align-items:center;
+    padding-bottom: 10px;
+    overflow: hidden;
+  }
+  .tarjeta-sabor .foto-respaldo{ height: 70px; width:100%; border-radius: 13px 13px 0 0; }
+  .tarjeta-sabor .foto-respaldo i{ max-width:28px; max-height:28px; }
+  .nombre-sabor{ font-size:.78rem; font-weight:700; margin-top:8px; padding: 0 6px; text-align:center; }
+  @media (max-width: 420px){ .tarjeta-sabor{ flex: 1 1 42%; } }
 
   /* ---------- Caja de precio base ---------- */
   .caja-precio{
-    background: var(--color-durazno-rosa);
+    background: var(--color-durazno);
     border-radius: var(--radio-mediano);
-    padding: 14px 16px;
+    padding: 14px 18px;
     display:flex; justify-content:space-between; align-items:center;
-    margin: 4px 0 2px;
+    margin: 2px 0 18px;
   }
-  .caja-precio span{ font-weight: 700; font-size: .9rem; }
+  .caja-precio span{ font-weight: 700; font-size: .88rem; color: var(--color-acento-oscuro); }
   .caja-precio strong{ font-size: 1.3rem; font-family:'Poppins', sans-serif; }
 
-  /* ---------- Extras (checkbox tipo tarjeta) ---------- */
+  /* ---------- Extras (switch) ---------- */
   .fila-extra{
     display:flex; align-items:center; justify-content:space-between;
-    padding: 12px 14px;
+    gap: 12px;
+    padding: 13px 14px;
     background: var(--color-fondo);
     border-radius: var(--radio-mediano);
     margin-bottom: 10px;
     border: 2px solid transparent;
     transition: all .15s ease;
   }
+  @media (hover:hover){ .fila-extra:hover{ border-color: var(--color-acento); } }
   .fila-extra.activo{
-    background: var(--color-acento-suave);
-    border-color: var(--color-acento);
+    background: var(--color-durazno);
+    border-color: var(--color-acento-fuerte);
   }
-  .fila-extra .info-extra{ display:flex; align-items:center; gap:10px; }
-  .fila-extra .info-extra .emoji{ font-size: 1.3rem; }
-  .fila-extra .nombre-extra{ font-weight: 700; font-size: .88rem; }
-  .fila-extra .precio-extra{ font-size: .78rem; color: var(--color-texto-suave); font-weight:600; }
+  .fila-extra .info-extra{ display:flex; align-items:center; gap:12px; min-width:0; }
+  .icono-extra{
+    width: 38px; height:38px; border-radius: 50%;
+    background: var(--color-blanco);
+    display:flex; align-items:center; justify-content:center;
+    flex-shrink:0;
+  }
+  .icono-extra i{ width:18px; height:18px; color: var(--color-acento-fuerte); }
+  .nombre-extra{ font-weight: 700; font-size: .9rem; }
+  .extra-derecha{ display:flex; align-items:center; gap:14px; flex-shrink:0; }
+  .precio-extra{ font-size: .85rem; color: var(--color-acento-oscuro); font-weight:800; white-space:nowrap; }
+
+  @media (max-width: 460px){
+    .fila-extra{ flex-wrap: wrap; }
+    .nombre-extra{ white-space:nowrap; }
+    .extra-derecha{ margin-left: 50px; }
+  }
 
   .switch{
     width: 46px; height: 26px;
     border-radius: 20px;
-    background: #E6DED3;
+    background: #DED2C3;
     position: relative;
     flex-shrink: 0;
     transition: background .2s ease;
@@ -253,89 +418,96 @@
     box-shadow: 0 2px 4px rgba(0,0,0,.15);
     transition: left .2s ease;
   }
-  .switch.on{ background: var(--color-acento); }
+  .switch.on{ background: var(--color-acento-fuerte); }
   .switch.on .bolita{ left: 23px; }
 
   /* ---------- Campo de texto (decorado / notas) ---------- */
   textarea, input[type="text"], input[type="date"], input[type="time"]{
     width: 100%;
-    border: 2px solid var(--color-acento-suave);
+    border: 2px solid var(--color-borde-suave);
     background: var(--color-fondo);
     border-radius: var(--radio-mediano);
     padding: 12px 14px;
-    font-size: .9rem;
+    font-size: .92rem;
     color: var(--color-texto);
     resize: none;
+    transition: border-color .15s ease;
   }
-  textarea:focus, input:focus{ border-color: var(--color-acento); }
+  textarea:focus, input:focus{ border-color: var(--color-acento-fuerte); }
   label.etiqueta{
-    display:block;
+    display:flex; align-items:center; gap:7px;
     font-weight: 700;
     font-size: .85rem;
-    margin: 14px 0 6px;
+    margin: 16px 0 6px;
   }
+  label.etiqueta i{ width:15px; height:15px; color: var(--color-acento-fuerte); }
   label.etiqueta:first-child{ margin-top: 0; }
 
   /* ---------- Stepper de cantidad +/- ---------- */
-  .stepper{
-    display:flex; align-items:center; gap: 10px;
-  }
+  .fila-cantidad{ display:flex; align-items:center; justify-content:space-between; }
+  .stepper{ display:flex; align-items:center; gap: 10px; }
   .stepper button{
     width: 34px; height: 34px;
     border-radius: 50%;
-    background: var(--color-acento);
-    color: #5a4336;
-    font-size: 1.1rem;
-    font-weight: 800;
+    background: var(--color-acento-fuerte);
+    color: #fff;
     display:flex; align-items:center; justify-content:center;
     box-shadow: var(--sombra-boton);
-    transition: transform .12s ease;
+    transition: transform .12s ease, opacity .12s ease;
   }
+  .stepper button i{ width:15px; height:15px; }
   .stepper button:active{ transform: scale(0.88); }
-  .stepper button:disabled{ opacity: .4; box-shadow:none; }
-  .stepper .cantidad{
-    min-width: 26px;
-    text-align:center;
-    font-weight: 800;
-    font-size: 1.05rem;
-  }
+  .stepper button:disabled{ opacity: .35; box-shadow:none; }
+  .stepper .cantidad{ min-width: 26px; text-align:center; font-weight: 800; font-size: 1.05rem; }
 
-  /* ---------- Tarjeta de producto simple (pays, brazos, etc.) ---------- */
+  /* ---------- Lista de "otros productos" (pays, brazos, etc.) ---------- */
+  .lista-productos{ display:flex; flex-direction:column; gap:14px; margin-bottom: 18px; }
   .tarjeta-producto{
-    display:flex; align-items:center; gap: 12px;
+    display:flex; align-items:center; gap: 14px;
     background: var(--color-blanco);
     border-radius: var(--radio-grande);
     box-shadow: var(--sombra-suave);
-    padding: 14px;
-    margin-bottom: 14px;
+    padding: 12px;
+    border: 2px solid transparent;
+    transition: border-color .15s ease;
   }
-  .tarjeta-producto .foto-placeholder{
-    width: 58px; height: 58px;
+  .tarjeta-producto.activo{ border-color: var(--color-acento-fuerte); }
+  .tarjeta-producto .foto-respaldo{
+    width: 64px; height: 64px;
     border-radius: 16px;
-    background: var(--color-acento-suave);
-    display:flex; align-items:center; justify-content:center;
-    font-size: 1.7rem;
     flex-shrink: 0;
   }
-  .tarjeta-producto .info-producto{ flex: 1; }
-  .tarjeta-producto h4{ margin:0 0 2px; font-size: .92rem; }
-  .tarjeta-producto .precio-unit{ font-size: .82rem; color: var(--color-texto-suave); font-weight:700; }
+  .tarjeta-producto .foto-respaldo i{ max-width:26px; max-height:26px; }
+  .info-producto{ flex: 1; min-width:0; }
+  .tarjeta-producto h4{ margin:0 0 3px; font-size: .95rem; }
+  .tarjeta-producto .precio-unit{ font-size: .82rem; color: var(--color-acento-oscuro); font-weight:800; }
 
   /* ---------- Botones grandes ---------- */
   .btn-grande{
     width: 100%;
-    padding: 16px;
+    padding: 16px 20px;
     border-radius: var(--radio-mediano);
-    background: var(--color-acento);
-    color: #5a4336;
+    background: linear-gradient(135deg, var(--color-acento) 0%, var(--color-acento-fuerte) 100%);
+    color: #4a2a12;
     font-weight: 800;
     font-size: 1rem;
     box-shadow: var(--sombra-boton);
-    transition: transform .15s ease, opacity .15s ease;
-    display:flex; align-items:center; justify-content:center; gap:8px;
+    transition: transform .15s ease, opacity .15s ease, box-shadow .15s ease;
+    display:flex; align-items:center; justify-content:center; gap:10px;
   }
+  @media (hover:hover){ .btn-grande:not(:disabled):hover{ transform: translateY(-2px); box-shadow: 0 14px 26px rgba(232,121,58,0.42); } }
   .btn-grande:active{ transform: scale(0.97); }
   .btn-grande:disabled{ opacity:.45; box-shadow:none; }
+  .btn-grande i{ width:18px; height:18px; }
+  .btn-total{ justify-content: space-between; }
+  .btn-total-label{ display:flex; align-items:center; gap:9px; }
+  .btn-total-monto{
+    background: rgba(255,255,255,.4);
+    padding: 5px 14px;
+    border-radius: 12px;
+    font-family: 'Poppins', sans-serif;
+    font-weight: 800;
+  }
   .btn-secundario{
     width: 100%;
     padding: 14px;
@@ -346,122 +518,134 @@
     font-size: .92rem;
     box-shadow: var(--sombra-suave);
     margin-top: 10px;
+    display:flex; align-items:center; justify-content:center; gap:8px;
   }
-  .btn-whatsapp{
-    background: #CFEFD9;
-    color: #2f6b45;
-  }
+  .btn-secundario i{ width:16px; height:16px; }
+  .btn-whatsapp{ background: var(--color-exito); color: var(--color-exito-texto); }
 
-  /* ---------- Barra inferior fija (total + ver carrito) ---------- */
+  /* ---------- Barra inferior fija (misma anchura que el contenido) ---------- */
   .barra-inferior{
     position: fixed;
-    bottom: 0;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 100%;
-    max-width: 480px;
+    left: 0; right: 0; bottom: 0;
+    display:flex; justify-content:center;
     background: var(--color-blanco);
-    box-shadow: 0 -8px 24px rgba(74,74,74,0.12);
-    padding: 14px 18px;
-    display:flex; align-items:center; justify-content:space-between;
-    gap: 14px;
-    border-radius: 24px 24px 0 0;
+    box-shadow: 0 -8px 24px rgba(46,42,38,0.1);
     z-index: 50;
   }
-  .barra-inferior .info-total{ line-height:1.1; }
-  .barra-inferior .info-total span{ font-size:.72rem; color: var(--color-texto-suave); font-weight:700; }
-  .barra-inferior .info-total strong{ font-size: 1.25rem; font-family:'Poppins',sans-serif; display:block; }
-  .barra-inferior button{
-    background: var(--color-acento);
-    padding: 13px 20px;
+  .barra-inferior-inner{
+    width: 100%;
+    max-width: var(--ancho-contenido);
+    padding: 14px 20px;
+    display:flex; align-items:center; justify-content:space-between;
+    gap: 14px;
+  }
+  .info-total{ line-height:1.1; }
+  .info-total span{ font-size:.72rem; color: var(--color-texto-suave); font-weight:800; letter-spacing:.3px; }
+  .info-total strong{ font-size: 1.3rem; font-family:'Poppins',sans-serif; display:block; transition: color .2s ease; }
+  .info-total strong.pulso{ animation: pulso .4s ease; }
+  @keyframes pulso{
+    0%{ transform: scale(1); }
+    40%{ transform: scale(1.16); color: var(--color-acento-fuerte); }
+    100%{ transform: scale(1); }
+  }
+  #btn-ver-carrito{
+    background: linear-gradient(135deg, var(--color-acento) 0%, var(--color-acento-fuerte) 100%);
+    color: #4a2a12;
+    padding: 13px 22px;
     border-radius: 16px;
     font-weight: 800;
     box-shadow: var(--sombra-boton);
     white-space: nowrap;
+    display:flex; align-items:center; gap:8px;
+    transition: transform .15s ease;
   }
+  #btn-ver-carrito i{ width:17px; height:17px; }
+  #btn-ver-carrito:active{ transform: scale(0.95); }
 
   /* ---------- Carrito ---------- */
   .item-carrito{
     background: var(--color-blanco);
     border-radius: var(--radio-grande);
     box-shadow: var(--sombra-suave);
-    padding: 14px;
+    padding: 16px;
     margin-bottom: 14px;
   }
   .item-carrito .fila-top{
     display:flex; justify-content:space-between; align-items:flex-start;
-    gap: 10px;
+    gap: 12px;
   }
-  .item-carrito h4{ margin:0 0 4px; font-size: .95rem; }
-  .item-carrito .detalle-item{ font-size: .78rem; color: var(--color-texto-suave); font-weight:600; line-height:1.4; }
-  .item-carrito .precio-item{ font-weight: 800; font-family:'Poppins',sans-serif; white-space:nowrap; }
+  .item-carrito h4{ margin:0 0 4px; font-size: .98rem; }
+  .item-carrito .detalle-item{ font-size: .8rem; color: var(--color-texto-suave); font-weight:600; line-height:1.5; }
+  .item-carrito .precio-item{ font-weight: 800; font-family:'Poppins',sans-serif; white-space:nowrap; color: var(--color-acento-oscuro); }
   .item-carrito .fila-acciones{
     display:flex; justify-content:space-between; align-items:center;
     margin-top: 12px;
-    padding-top: 10px;
-    border-top: 1px dashed var(--color-acento-suave);
+    padding-top: 12px;
+    border-top: 1px dashed var(--color-borde-suave);
+    flex-wrap: wrap;
+    gap: 10px;
   }
   .botones-mini{ display:flex; gap:8px; }
   .btn-mini{
     background: var(--color-fondo);
     border-radius: 10px;
-    padding: 8px 12px;
-    font-size: .78rem;
+    padding: 9px 13px;
+    font-size: .8rem;
     font-weight: 700;
     color: var(--color-texto);
+    display:flex; align-items:center; gap:6px;
+    transition: background .15s ease;
   }
-  .btn-mini.eliminar{ color: #c0574a; }
+  .btn-mini i{ width:14px; height:14px; }
+  @media (hover:hover){ .btn-mini:hover{ background: var(--color-durazno); } }
+  .btn-mini.eliminar{ color: var(--color-error-texto); }
 
   .carrito-vacio{
     text-align:center;
-    padding: 40px 10px;
+    padding: 50px 10px;
     color: var(--color-texto-suave);
   }
-  .carrito-vacio .emoji-grande{ font-size: 3rem; display:block; margin-bottom: 10px; }
+  .carrito-vacio i{ width:56px; height:56px; color: var(--color-acento); margin-bottom: 14px; stroke-width:1.5; }
+  .carrito-vacio p{ font-weight:700; margin: 0 0 20px; }
 
   .resumen-total{
     display:flex; justify-content:space-between; align-items:center;
-    background: var(--color-acento-suave);
+    background: var(--color-durazno);
     border-radius: var(--radio-mediano);
-    padding: 16px;
+    padding: 16px 18px;
     margin: 6px 0 16px;
     font-weight: 800;
   }
-  .resumen-total strong{ font-size: 1.3rem; font-family:'Poppins', sans-serif; }
+  .resumen-total strong{ font-size: 1.3rem; font-family:'Poppins', sans-serif; color: var(--color-acento-oscuro); }
 
-  /* ---------- Radios de entrega ---------- */
+  /* ---------- Opciones de entrega (checkout) ---------- */
   .opciones-entrega{ display:flex; gap:10px; }
   .opcion-entrega{
     flex:1;
     text-align:center;
-    padding: 14px 8px;
-    border-radius: var(--radio-mediano);
-    background: var(--color-fondo);
-    border: 2px solid transparent;
+    padding: 16px 8px;
+    display:flex; flex-direction:column; align-items:center; gap:6px;
     font-weight: 700;
     font-size: .85rem;
   }
-  .opcion-entrega.activo{
-    background: var(--color-acento-suave);
-    border-color: var(--color-acento);
-  }
+  .opcion-entrega i{ width:20px; height:20px; color: var(--color-acento-fuerte); }
 
   /* ---------- Toast de confirmación ---------- */
   #toast{
     position: fixed;
-    top: 16px;
+    top: 18px;
     left: 50%;
-    transform: translateX(-50%) translateY(-60px);
+    transform: translateX(-50%) translateY(-70px);
     background: var(--color-exito);
-    color: #2f6b45;
+    color: var(--color-exito-texto);
     font-weight: 800;
-    padding: 12px 20px;
+    padding: 13px 22px;
     border-radius: 16px;
-    box-shadow: var(--sombra-suave);
+    box-shadow: var(--sombra-hover);
     z-index: 200;
     opacity: 0;
     transition: all .3s ease;
-    font-size: .85rem;
+    font-size: .88rem;
     max-width: 90%;
     text-align: center;
   }
@@ -470,36 +654,43 @@
     opacity: 1;
   }
 
-  .ayuda-texto{ font-size:.75rem; color: var(--color-texto-suave); font-weight:600; margin-top:6px; }
+  .ayuda-texto{ font-size:.78rem; color: var(--color-texto-suave); font-weight:700; margin-top:8px; text-align:center; }
 </style>
 </head>
 <body>
 
-  <div class="app-container">
+  <!-- ===================== ENCABEZADO DE MARCA (ancho completo) ===================== -->
+  <header class="topbar">
+    <div class="topbar-inner">
+      <div class="logo-wrap">
+        <i data-lucide="cake-slice"></i>
+        <img src="img/logo.png" alt="Logo Gema Pastelería" onerror="this.remove()">
+      </div>
+      <div class="marca-texto">
+        <h1>Gema Pastelería</h1>
+        <p>Cochabamba, Bolivia · Pedidos para recojo o envío</p>
+      </div>
+    </div>
+  </header>
 
-    <!-- ===================== ENCABEZADO DE MARCA ===================== -->
-    <header class="marca-header">
-      <h1>🧁 Repostería Gema</h1>
-      <p>Cochabamba, Bolivia · Pedidos para recojo o envío</p>
-    </header>
+  <!-- ===================== CONTENIDO DINÁMICO ===================== -->
+  <main id="app-content"></main>
 
-    <!-- ===================== CONTENIDO DINÁMICO ===================== -->
-    <main id="app-content"></main>
-
-    <!-- ===================== BARRA INFERIOR FIJA ===================== -->
-    <div class="barra-inferior" id="barra-inferior">
+  <!-- ===================== BARRA INFERIOR FIJA ===================== -->
+  <div class="barra-inferior" id="barra-inferior">
+    <div class="barra-inferior-inner">
       <div class="info-total">
         <span>TOTAL DEL PEDIDO</span>
         <strong id="total-monto">Bs 0.00</strong>
       </div>
-      <button id="btn-ver-carrito" onclick="irA('carrito')">🛒 Ver carrito</button>
+      <button id="btn-ver-carrito" onclick="irA('carrito')"><i data-lucide="shopping-cart"></i>Ver carrito</button>
     </div>
-
-    <!-- ===================== TOAST ===================== -->
-    <div id="toast"></div>
-
   </div>
 
+  <!-- ===================== TOAST ===================== -->
+  <div id="toast"></div>
+
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
 <script>
 /* ============================================================
    CONFIGURACIÓN GENERAL
@@ -509,7 +700,7 @@
 const CONFIG = {
 
   // Nombre y número de WhatsApp de la tienda (formato internacional sin "+")
-  nombreTienda: "Repostería Gema",
+  nombreTienda: "Gema Pastelería",
   numeroWhatsapp: "59172748128",
 
   // Colores de referencia (ya aplicados en el <style>, se dejan aquí
@@ -595,6 +786,40 @@ const CONFIG = {
 };
 
 /* ============================================================
+   ICONOS DE INTERFAZ (reemplazan a los emojis de CONFIG en la UI)
+   CONFIG no se modifica: estos mapas solo indican qué ícono de
+   línea (Lucide) usar para cada id, y qué foto buscar en img/.
+   ============================================================ */
+const ICONOS_CATEGORIA = {
+  tortas: "cake-slice", pays: "pie-chart", brazos: "disc",
+  masitas: "cookie", brownies: "square", vasos: "cup-soda", minitortas: "cake-slice",
+};
+const ICONOS_TIPO_TORTA = { Normal: "circle", Semi: "layers", Especial: "sparkles" };
+const ICONOS_EXTRA = { masaChocolate: "cookie", manjar: "milk", personalizado: "palette" };
+
+/* ============================================================
+   FOTOS DISPONIBLES (demo)
+   Solo hay 4 fotos reales por ahora. FOTOS_CATEGORIA y
+   FOTOS_TIPO_TORTA asignan la foto que corresponde a cada
+   categoría/tipo; fotoDemo() rellena todo lo demás (sabores,
+   otros productos, categorías sin foto propia) reciclando estas
+   mismas fotos para que ninguna tarjeta quede vacía.
+   ============================================================ */
+const FOTOS_DEMO = ["img/especial.jpg", "img/semi.jpg", "img/pay.jpg"];
+function fotoDemo(indice){ return FOTOS_DEMO[indice % FOTOS_DEMO.length]; }
+
+const FOTOS_CATEGORIA = {
+  tortas: "img/especial.jpg",
+  pays: "img/pay.jpg",
+  brazos: "img/semi.jpg",
+  masitas: "img/pay.jpg",
+  brownies: "img/especial.jpg",
+  vasos: "img/semi.jpg",
+  minitortas: "img/pay.jpg",
+};
+const FOTOS_TIPO_TORTA = { Normal: "img/pay.jpg", Semi: "img/semi.jpg", Especial: "img/especial.jpg" };
+
+/* ============================================================
    ESTADO DE LA APLICACIÓN
    ============================================================ */
 const estado = {
@@ -641,6 +866,30 @@ function generarIdCarrito(){
   return "item_" + Date.now() + "_" + Math.floor(Math.random() * 1000);
 }
 
+// Genera el bloque de foto con respaldo automático: si la imagen no existe,
+// se elimina sola (onerror) y queda visible el ícono de línea de fondo.
+function foto(ruta, alt, icono){
+  return `<i data-lucide="${icono}"></i><img src="${ruta}" alt="${alt}" loading="lazy" onerror="this.remove()">`;
+}
+
+// Insignia de "check" para la esquina de una opción seleccionada
+function insigniaSeleccion(){
+  return `<span class="check-badge"><i data-lucide="check"></i></span>`;
+}
+
+// Precio más bajo disponible dentro de una categoría (para el "desde Bs X" del inicio)
+function precioDesdeCategoria(idCategoria){
+  if(idCategoria === "tortas"){
+    let minimo = Infinity;
+    Object.values(CONFIG.tortas.precios).forEach(porTipo => {
+      Object.values(porTipo).forEach(precio => { if(precio < minimo) minimo = precio; });
+    });
+    return minimo;
+  }
+  const productos = CONFIG.otrosProductos.filter(p => p.categoria === idCategoria);
+  return productos.length ? Math.min(...productos.map(p => p.precio)) : 0;
+}
+
 // Muestra un mensaje flotante breve (confirmaciones de "agregado", etc.)
 let toastTimeout = null;
 function mostrarToast(mensaje){
@@ -667,9 +916,16 @@ function calcularTotalCarrito(){
   return estado.carrito.reduce((suma, item) => suma + item.precioTotal, 0);
 }
 
-// Actualiza el monto visible en la barra inferior fija
+// Actualiza el monto visible en la barra inferior fija (con pequeña animación al cambiar)
 function actualizarBarraInferior(){
-  document.getElementById("total-monto").textContent = formatearBs(calcularTotalCarrito());
+  const montoEl = document.getElementById("total-monto");
+  const textoNuevo = formatearBs(calcularTotalCarrito());
+  if(montoEl.textContent !== textoNuevo){
+    montoEl.textContent = textoNuevo;
+    montoEl.classList.remove("pulso");
+    void montoEl.offsetWidth; // reinicia la animación
+    montoEl.classList.add("pulso");
+  }
   // En la pantalla de checkout ocultamos la barra para no estorbar el formulario
   const barra = document.getElementById("barra-inferior");
   barra.style.display = (estado.pantalla === "checkout") ? "none" : "flex";
@@ -700,23 +956,35 @@ function render(){
   }
 
   actualizarBarraInferior();
+  if(window.lucide) window.lucide.createIcons();
 }
 
 /* ============================================================
-   VISTA: INICIO (categorías en tarjetas)
+   VISTA: INICIO (hero + categorías en tarjetas con foto)
    ============================================================ */
 function vistaInicio(){
-  const tarjetas = CONFIG.categorias.map(cat => `
+  const tarjetas = CONFIG.categorias.map((cat, i) => `
     <button class="tarjeta-categoria" onclick="seleccionarCategoria('${cat.id}')">
-      <div class="emoji-placeholder">${cat.emoji}</div>
-      <span>${cat.nombre}</span>
+      <div class="foto-respaldo">${foto(FOTOS_CATEGORIA[cat.id] || fotoDemo(i), cat.nombre, ICONOS_CATEGORIA[cat.id] || "image")}</div>
+      <div class="info-categoria">
+        <span class="nombre-categoria">${cat.nombre}</span>
+        <span class="desde-categoria">desde ${formatearBs(precioDesdeCategoria(cat.id))}</span>
+      </div>
     </button>
   `).join("");
 
   return `
-    <div class="banner-bienvenida">
-      <p>👋 ¡Hola! ¿Qué se te antoja hoy?</p>
-      <span>Elige una categoría para armar tu pedido</span>
+    <section class="hero">
+      <div class="hero-contenido">
+        <img class="hero-logo" src="img/logo.png" alt="Gema Pastelería" loading="lazy">
+        <h2>Gema Pastelería</h2>
+        <p>Te acompañamos en toda ocasión</p>
+      </div>
+    </section>
+
+    <div class="intro-categorias">
+      <h3>¿Qué se te antoja hoy?</h3>
+      <p>Elige una categoría para comenzar tu pedido</p>
     </div>
     <div class="grid-categorias">${tarjetas}</div>
   `;
@@ -738,78 +1006,121 @@ function seleccionarCategoria(id){
 /* ============================================================
    VISTA: ARMADOR DE TORTAS
    ============================================================ */
+
+// Calcula el estado de la barra de progreso según lo que ya eligió el cliente
+function pasosProgreso(t){
+  const tipoListo = !!(t.tamano && t.tipo && (t.tipo !== "Especial" || t.sabor));
+  const pasos = [
+    { nombre: "Tamaño",    hecho: !!t.tamano },
+    { nombre: "Tipo",      hecho: tipoListo },
+    { nombre: "Extras",    hecho: tipoListo },
+    { nombre: "Decorado",  hecho: tipoListo },
+    { nombre: "Confirmar", hecho: tipoListo },
+  ];
+  let actualIdx = pasos.findIndex(p => !p.hecho);
+  if(actualIdx === -1) actualIdx = pasos.length - 1;
+
+  return `<div class="progreso-pasos">${pasos.map((p, i) => `
+    <div class="paso ${p.hecho ? "hecho" : ""} ${i === actualIdx ? "actual" : ""}">
+      <span class="paso-circulo">${p.hecho ? '<i data-lucide="check"></i>' : (i + 1)}</span>
+      <span class="paso-nombre">${p.nombre}</span>
+    </div>
+    ${i < pasos.length - 1 ? '<span class="paso-linea"></span>' : ""}
+  `).join("")}</div>`;
+}
+
 function vistaTorta(){
   const t = estado.tortaTemp;
   const editando = estado.indiceEdicionCarrito !== null;
 
-  // --- Chips de tamaño ---
-  const chipsTamano = CONFIG.tortas.tamanios.map(tam => `
-    <button class="chip ${t.tamano === tam ? 'activo' : ''}" onclick="elegirTamanoTorta('${tam}')">
-      ${tam} porc.
-    </button>
-  `).join("");
+  // --- Chips de tamaño (muestran el precio según el tipo ya elegido) ---
+  const chipsTamano = CONFIG.tortas.tamanios.map(tam => {
+    const activo = t.tamano === tam;
+    const precio = t.tipo ? CONFIG.tortas.precios[tam][t.tipo] : null;
+    return `
+      <button class="chip opcion-seleccionable ${activo ? "seleccionado" : ""}" onclick="elegirTamanoTorta('${tam}')">
+        ${activo ? insigniaSeleccion() : ""}
+        <span class="chip-tam">${tam} porc.</span>
+        ${precio !== null ? `<span class="chip-precio">${formatearBs(precio)}</span>` : ""}
+      </button>
+    `;
+  }).join("");
 
-  // --- Chips de tipo ---
-  const chipsTipo = CONFIG.tortas.tipos.map(tipo => `
-    <button class="chip ${t.tipo === tipo.id ? 'activo' : ''}" onclick="elegirTipoTorta('${tipo.id}')">
-      ${tipo.emoji} ${tipo.nombre}
-      <small>${tipo.descripcion}</small>
-    </button>
-  `).join("");
+  // --- Tarjetas de tipo (con foto y descripción corta) ---
+  const chipsTipo = CONFIG.tortas.tipos.map((tipo, i) => {
+    const activo = t.tipo === tipo.id;
+    return `
+      <button class="tarjeta-tipo opcion-seleccionable ${activo ? "seleccionado" : ""}" onclick="elegirTipoTorta('${tipo.id}')">
+        ${activo ? insigniaSeleccion() : ""}
+        <div class="foto-respaldo">${foto(FOTOS_TIPO_TORTA[tipo.id] || fotoDemo(i), tipo.nombre, ICONOS_TIPO_TORTA[tipo.id] || "cake-slice")}</div>
+        <div class="info-tipo">
+          <span class="nombre-tipo">${tipo.nombre}</span>
+          <span class="desc-tipo">${tipo.descripcion}</span>
+        </div>
+      </button>
+    `;
+  }).join("");
 
-  // --- Chips de sabor (solo si el tipo es Especial) ---
+  // --- Tarjetas de sabor (solo si el tipo es Especial), con foto pequeña ---
   const mostrarSabores = t.tipo === "Especial";
-  const chipsSabor = CONFIG.tortas.saboresEspecial.map(sabor => `
-    <button class="chip ${t.sabor === sabor ? 'activo' : ''}" onclick="elegirSaborTorta('${sabor}')">
-      ${sabor}
-    </button>
-  `).join("");
+  const chipsSabor = CONFIG.tortas.saboresEspecial.map((sabor, i) => {
+    const activo = t.sabor === sabor;
+    return `
+      <button class="tarjeta-sabor opcion-seleccionable ${activo ? "seleccionado" : ""}" onclick="elegirSaborTorta('${sabor}')">
+        ${activo ? insigniaSeleccion() : ""}
+        <div class="foto-respaldo">${foto(fotoDemo(i), sabor, "sparkles")}</div>
+        <span class="nombre-sabor">${sabor}</span>
+      </button>
+    `;
+  }).join("");
 
   // --- Caja de precio base (solo si ya hay tamaño y tipo) ---
-  const hayPrecioBase = t.tamano && t.tipo;
+  const hayPrecioBase = !!(t.tamano && t.tipo);
   const precioBase = hayPrecioBase ? CONFIG.tortas.precios[t.tamano][t.tipo] : 0;
 
   // --- Extras ---
   const filasExtras = CONFIG.tortas.extras.map(extra => {
     const activo = !!t.extras[extra.id];
     return `
-      <div class="fila-extra ${activo ? 'activo' : ''}" onclick="alternarExtraTorta('${extra.id}')">
+      <div class="fila-extra ${activo ? "activo" : ""}" onclick="alternarExtraTorta('${extra.id}')">
         <div class="info-extra">
-          <span class="emoji">${extra.emoji}</span>
-          <div>
-            <div class="nombre-extra">${extra.nombre}</div>
-            <div class="precio-extra">+ ${formatearBs(extra.precio)}</div>
-          </div>
+          <span class="icono-extra"><i data-lucide="${ICONOS_EXTRA[extra.id] || "plus"}"></i></span>
+          <span class="nombre-extra">${extra.nombre}</span>
         </div>
-        <div class="switch ${activo ? 'on' : ''}"><div class="bolita"></div></div>
+        <div class="extra-derecha">
+          <span class="precio-extra">+ ${formatearBs(extra.precio)}</span>
+          <div class="switch ${activo ? "on" : ""}"><div class="bolita"></div></div>
+        </div>
       </div>
     `;
   }).join("");
 
   // --- Validación para habilitar el botón de agregar ---
-  const puedeAgregar = t.tamano && t.tipo && (t.tipo !== "Especial" || t.sabor);
+  const puedeAgregar = !!(t.tamano && t.tipo && (t.tipo !== "Especial" || t.sabor));
   const precioFinal = calcularPrecioTorta(t);
 
   return `
     <div class="fila-volver">
-      <button class="btn-volver" onclick="irA('inicio')">←</button>
-      <h2 class="titulo-pantalla">🎂 ${editando ? "Editar torta" : "Arma tu torta"}</h2>
+      <button class="btn-volver" onclick="irA('inicio')"><i data-lucide="arrow-left"></i></button>
+      <h2 class="titulo-pantalla">${editando ? "Editar torta" : "Arma tu torta"}</h2>
     </div>
 
+    ${pasosProgreso(t)}
+
     <div class="seccion">
-      <h3>1️⃣ Elige el tamaño (porciones)</h3>
+      <h3><span class="paso-num">1</span> Elige el tamaño</h3>
       <div class="grid-chips">${chipsTamano}</div>
     </div>
 
     <div class="seccion">
-      <h3>2️⃣ Elige el tipo</h3>
-      <div class="grid-chips chips-2col" style="grid-template-columns: 1fr;">${chipsTipo}</div>
+      <h3><span class="paso-num">2</span> Elige el tipo</h3>
+      <div class="grid-tipos">${chipsTipo}</div>
     </div>
 
     ${mostrarSabores ? `
     <div class="seccion">
-      <h3>3️⃣ Elige el sabor</h3>
-      <div class="grid-chips chips-2col">${chipsSabor}</div>
+      <h3><span class="paso-num">3</span> Elige el sabor</h3>
+      <div class="grid-sabores">${chipsSabor}</div>
     </div>` : ""}
 
     ${hayPrecioBase ? `
@@ -819,33 +1130,29 @@ function vistaTorta(){
     </div>` : ""}
 
     <div class="seccion">
-      <h3>✨ Extras (opcionales)</h3>
+      <h3><i data-lucide="sparkles"></i> Extras opcionales</h3>
       ${filasExtras}
     </div>
 
     <div class="seccion">
-      <h3>🎨 ¿Cómo quieres el decorado?</h3>
-      <textarea rows="2" placeholder="Escribe aquí el decorado que quieres: colores, temática, texto en la torta..." oninput="actualizarDecorado(this.value)">${t.decorado}</textarea>
+      <h3><i data-lucide="palette"></i> ¿Cómo quieres el decorado?</h3>
+      <textarea rows="2" placeholder="Describe el decorado: colores, temática, texto en la torta..." oninput="actualizarDecorado(this.value)">${t.decorado}</textarea>
     </div>
 
-    <div class="seccion" style="display:flex; align-items:center; justify-content:space-between;">
-      <h3 style="margin:0;">🔢 Cantidad</h3>
+    <div class="seccion fila-cantidad">
+      <h3 style="margin:0;">Cantidad</h3>
       <div class="stepper">
-        <button onclick="cambiarCantidadTorta(-1)" ${t.cantidad <= 1 ? "disabled" : ""}>−</button>
+        <button onclick="cambiarCantidadTorta(-1)" ${t.cantidad <= 1 ? "disabled" : ""}><i data-lucide="minus"></i></button>
         <span class="cantidad">${t.cantidad}</span>
-        <button onclick="cambiarCantidadTorta(1)">+</button>
+        <button onclick="cambiarCantidadTorta(1)"><i data-lucide="plus"></i></button>
       </div>
     </div>
 
-    <div class="resumen-total">
-      <span>Total de esta torta</span>
-      <strong>${formatearBs(precioFinal)}</strong>
-    </div>
-
-    <button class="btn-grande" ${puedeAgregar ? "" : "disabled"} onclick="agregarTortaAlCarrito()">
-      ${editando ? "💾 Guardar cambios" : "🛒 Agregar al carrito"}
+    <button class="btn-grande btn-total" ${puedeAgregar ? "" : "disabled"} onclick="agregarTortaAlCarrito()">
+      <span class="btn-total-label"><i data-lucide="${editando ? "save" : "shopping-cart"}"></i>${editando ? "Guardar cambios" : "Agregar al carrito"}</span>
+      <span class="btn-total-monto">${formatearBs(precioFinal)}</span>
     </button>
-    ${!puedeAgregar ? `<p class="ayuda-texto" style="text-align:center;">Elige tamaño, tipo${mostrarSabores ? " y sabor" : ""} para continuar</p>` : ""}
+    ${!puedeAgregar ? `<p class="ayuda-texto">Elige tamaño, tipo${mostrarSabores ? " y sabor" : ""} para continuar</p>` : ""}
   `;
 }
 
@@ -892,7 +1199,7 @@ function agregarTortaAlCarrito(){
       : generarIdCarrito(),
     tipoItem: "torta",
     nombre: "Torta " + CONFIG.tortas.tipos.find(x => x.id === t.tipo).nombre,
-    emoji: "🎂",
+    icono: "cake-slice",
     detalle: describirTorta(t),
     cantidad: t.cantidad,
     precioUnitario: precioUnitario,
@@ -902,10 +1209,10 @@ function agregarTortaAlCarrito(){
 
   if(estado.indiceEdicionCarrito !== null){
     estado.carrito[estado.indiceEdicionCarrito] = itemCarrito;
-    mostrarToast("✅ Torta actualizada en el carrito");
+    mostrarToast("Torta actualizada en el carrito");
   } else {
     estado.carrito.push(itemCarrito);
-    mostrarToast("✅ Torta agregada al carrito");
+    mostrarToast("Torta agregada al carrito");
   }
 
   irA("carrito");
@@ -918,19 +1225,19 @@ function vistaCategoria(){
   const cat = CONFIG.categorias.find(c => c.id === estado.categoriaActual);
   const productos = CONFIG.otrosProductos.filter(p => p.categoria === estado.categoriaActual);
 
-  const filasProductos = productos.map(prod => {
+  const filasProductos = productos.map((prod, i) => {
     const cantidad = estado.cantidadesTemp[prod.id] || 0;
     return `
-      <div class="tarjeta-producto">
-        <div class="foto-placeholder">${prod.emoji}</div>
+      <div class="tarjeta-producto ${cantidad > 0 ? "activo" : ""}">
+        <div class="foto-respaldo">${foto(fotoDemo(i), prod.nombre, ICONOS_CATEGORIA[cat.id] || "image")}</div>
         <div class="info-producto">
           <h4>${prod.nombre}</h4>
           <div class="precio-unit">${formatearBs(prod.precio)} ${prod.unidad ? prod.unidad : "c/u"}</div>
         </div>
         <div class="stepper">
-          <button onclick="cambiarCantidadTemp('${prod.id}', -1)" ${cantidad <= 0 ? "disabled" : ""}>−</button>
+          <button onclick="cambiarCantidadTemp('${prod.id}', -1)" ${cantidad <= 0 ? "disabled" : ""}><i data-lucide="minus"></i></button>
           <span class="cantidad">${cantidad}</span>
-          <button onclick="cambiarCantidadTemp('${prod.id}', 1)">+</button>
+          <button onclick="cambiarCantidadTemp('${prod.id}', 1)"><i data-lucide="plus"></i></button>
         </div>
       </div>
     `;
@@ -946,20 +1253,15 @@ function vistaCategoria(){
 
   return `
     <div class="fila-volver">
-      <button class="btn-volver" onclick="irA('inicio')">←</button>
-      <h2 class="titulo-pantalla">${cat.emoji} ${cat.nombre}</h2>
+      <button class="btn-volver" onclick="irA('inicio')"><i data-lucide="arrow-left"></i></button>
+      <h2 class="titulo-pantalla">${cat.nombre}</h2>
     </div>
 
-    ${filasProductos}
+    <div class="lista-productos">${filasProductos}</div>
 
-    ${hayAlgoSeleccionado ? `
-    <div class="resumen-total">
-      <span>Subtotal a agregar</span>
-      <strong>${formatearBs(totalParcial)}</strong>
-    </div>` : ""}
-
-    <button class="btn-grande" ${hayAlgoSeleccionado ? "" : "disabled"} onclick="agregarProductosDeCategoria()">
-      🛒 Agregar al carrito
+    <button class="btn-grande btn-total" ${hayAlgoSeleccionado ? "" : "disabled"} onclick="agregarProductosDeCategoria()">
+      <span class="btn-total-label"><i data-lucide="shopping-cart"></i>Agregar al carrito</span>
+      <span class="btn-total-monto">${formatearBs(totalParcial)}</span>
     </button>
   `;
 }
@@ -983,7 +1285,7 @@ function agregarProductosDeCategoria(){
         tipoItem: "simple",
         idProducto: prod.id,
         nombre: prod.nombre,
-        emoji: prod.emoji,
+        icono: ICONOS_CATEGORIA[prod.categoria] || "image",
         detalle: `${formatearBs(prod.precio)} ${prod.unidad ? prod.unidad : "c/u"}`,
         cantidad: cantidad,
         precioUnitario: prod.precio,
@@ -995,7 +1297,7 @@ function agregarProductosDeCategoria(){
 
   if(algoAgregado){
     estado.cantidadesTemp = {};
-    mostrarToast("✅ Agregado al carrito");
+    mostrarToast("Agregado al carrito");
     irA("carrito");
   }
 }
@@ -1007,14 +1309,14 @@ function vistaCarrito(){
   if(estado.carrito.length === 0){
     return `
       <div class="fila-volver">
-        <button class="btn-volver" onclick="irA('inicio')">←</button>
-        <h2 class="titulo-pantalla">🛒 Tu carrito</h2>
+        <button class="btn-volver" onclick="irA('inicio')"><i data-lucide="arrow-left"></i></button>
+        <h2 class="titulo-pantalla">Tu carrito</h2>
       </div>
       <div class="carrito-vacio">
-        <span class="emoji-grande">🧁</span>
+        <i data-lucide="shopping-bag"></i>
         <p>Tu carrito está vacío todavía.<br>¡Elige algo rico para empezar!</p>
       </div>
-      <button class="btn-grande" onclick="irA('inicio')">Ver categorías</button>
+      <button class="btn-grande" onclick="irA('inicio')"><i data-lucide="arrow-left"></i>Ver categorías</button>
     `;
   }
 
@@ -1022,7 +1324,7 @@ function vistaCarrito(){
     <div class="item-carrito">
       <div class="fila-top">
         <div>
-          <h4>${item.emoji} ${item.nombre} ${item.tipoItem === 'simple' ? `× ${item.cantidad}` : ""}</h4>
+          <h4>${item.nombre} ${item.tipoItem === 'simple' ? `× ${item.cantidad}` : ""}</h4>
           <div class="detalle-item">${item.detalle.replace(/\n/g, "<br>")}</div>
           ${item.tipoItem === "torta" ? `<div class="detalle-item">Cantidad: ${item.cantidad}</div>` : ""}
         </div>
@@ -1030,13 +1332,13 @@ function vistaCarrito(){
       </div>
       <div class="fila-acciones">
         <div class="stepper">
-          <button onclick="cambiarCantidadCarrito(${index}, -1)">−</button>
+          <button onclick="cambiarCantidadCarrito(${index}, -1)"><i data-lucide="minus"></i></button>
           <span class="cantidad">${item.cantidad}</span>
-          <button onclick="cambiarCantidadCarrito(${index}, 1)">+</button>
+          <button onclick="cambiarCantidadCarrito(${index}, 1)"><i data-lucide="plus"></i></button>
         </div>
         <div class="botones-mini">
-          ${item.tipoItem === "torta" ? `<button class="btn-mini" onclick="editarTortaDelCarrito(${index})">✏️ Editar</button>` : ""}
-          <button class="btn-mini eliminar" onclick="eliminarDelCarrito(${index})">🗑️ Eliminar</button>
+          ${item.tipoItem === "torta" ? `<button class="btn-mini" onclick="editarTortaDelCarrito(${index})"><i data-lucide="pencil"></i>Editar</button>` : ""}
+          <button class="btn-mini eliminar" onclick="eliminarDelCarrito(${index})"><i data-lucide="trash-2"></i>Eliminar</button>
         </div>
       </div>
     </div>
@@ -1044,8 +1346,8 @@ function vistaCarrito(){
 
   return `
     <div class="fila-volver">
-      <button class="btn-volver" onclick="irA('inicio')">←</button>
-      <h2 class="titulo-pantalla">🛒 Tu carrito</h2>
+      <button class="btn-volver" onclick="irA('inicio')"><i data-lucide="arrow-left"></i></button>
+      <h2 class="titulo-pantalla">Tu carrito</h2>
     </div>
 
     ${filas}
@@ -1055,8 +1357,8 @@ function vistaCarrito(){
       <strong>${formatearBs(calcularTotalCarrito())}</strong>
     </div>
 
-    <button class="btn-grande" onclick="irA('checkout')">✅ Finalizar pedido</button>
-    <button class="btn-secundario" onclick="irA('inicio')">➕ Seguir comprando</button>
+    <button class="btn-grande" onclick="irA('checkout')"><i data-lucide="check"></i>Finalizar pedido</button>
+    <button class="btn-secundario" onclick="irA('inicio')"><i data-lucide="plus"></i>Seguir comprando</button>
   `;
 }
 
@@ -1075,7 +1377,7 @@ function cambiarCantidadCarrito(index, delta){
 
 function eliminarDelCarrito(index){
   estado.carrito.splice(index, 1);
-  mostrarToast("🗑️ Producto eliminado");
+  mostrarToast("Producto eliminado");
   render();
 }
 
@@ -1095,32 +1397,36 @@ function vistaCheckout(){
 
   return `
     <div class="fila-volver">
-      <button class="btn-volver" onclick="irA('carrito')">←</button>
-      <h2 class="titulo-pantalla">📝 Finalizar pedido</h2>
+      <button class="btn-volver" onclick="irA('carrito')"><i data-lucide="arrow-left"></i></button>
+      <h2 class="titulo-pantalla">Finalizar pedido</h2>
     </div>
 
     <div class="seccion">
-      <label class="etiqueta">👤 Nombre completo</label>
+      <label class="etiqueta"><i data-lucide="user"></i>Nombre completo</label>
       <input type="text" placeholder="Ej: María Pérez" value="${c.nombre}" oninput="actualizarCheckout('nombre', this.value)">
 
-      <label class="etiqueta">📅 Fecha de entrega</label>
+      <label class="etiqueta"><i data-lucide="calendar"></i>Fecha de entrega</label>
       <input type="date" value="${c.fecha}" oninput="actualizarCheckout('fecha', this.value)">
 
-      <label class="etiqueta">🕒 Hora de entrega</label>
+      <label class="etiqueta"><i data-lucide="clock"></i>Hora de entrega</label>
       <input type="time" value="${c.hora}" oninput="actualizarCheckout('hora', this.value)">
 
-      <label class="etiqueta">🚚 Tipo de entrega</label>
+      <label class="etiqueta"><i data-lucide="truck"></i>Tipo de entrega</label>
       <div class="opciones-entrega">
-        <button class="opcion-entrega ${c.entrega === 'recojo' ? 'activo' : ''}" onclick="elegirTipoEntrega('recojo')">🏠 Recojo en tienda</button>
-        <button class="opcion-entrega ${c.entrega === 'envio' ? 'activo' : ''}" onclick="elegirTipoEntrega('envio')">🛵 Envío a domicilio</button>
+        <button class="opcion-entrega opcion-seleccionable ${c.entrega === 'recojo' ? 'seleccionado' : ''}" onclick="elegirTipoEntrega('recojo')">
+          <i data-lucide="home"></i>Recojo en tienda
+        </button>
+        <button class="opcion-entrega opcion-seleccionable ${c.entrega === 'envio' ? 'seleccionado' : ''}" onclick="elegirTipoEntrega('envio')">
+          <i data-lucide="truck"></i>Envío a domicilio
+        </button>
       </div>
 
       ${c.entrega === 'envio' ? `
-      <label class="etiqueta">📍 Dirección de envío</label>
+      <label class="etiqueta"><i data-lucide="map-pin"></i>Dirección de envío</label>
       <input type="text" placeholder="Zona, calle, número, referencia" value="${c.direccion}" oninput="actualizarCheckout('direccion', this.value)">
       ` : ""}
 
-      <label class="etiqueta">🗒️ Notas adicionales (opcional)</label>
+      <label class="etiqueta"><i data-lucide="sticky-note"></i>Notas adicionales (opcional)</label>
       <textarea rows="3" placeholder="Ej: sin azúcar, entregar en portería, etc." oninput="actualizarCheckout('notas', this.value)">${c.notas}</textarea>
     </div>
 
@@ -1130,7 +1436,7 @@ function vistaCheckout(){
     </div>
 
     <button class="btn-grande btn-whatsapp" onclick="enviarPedidoPorWhatsapp()">
-      📲 Enviar pedido por WhatsApp
+      <i data-lucide="send"></i>Enviar pedido por WhatsApp
     </button>
   `;
 }
@@ -1148,27 +1454,27 @@ function enviarPedidoPorWhatsapp(){
   const c = estado.checkout;
 
   if(!c.nombre.trim()){
-    mostrarToast("⚠️ Escribe tu nombre antes de enviar");
+    mostrarToast("Escribe tu nombre antes de enviar");
     return;
   }
   if(estado.carrito.length === 0){
-    mostrarToast("⚠️ Tu carrito está vacío");
+    mostrarToast("Tu carrito está vacío");
     return;
   }
 
   // --- Encabezado del mensaje ---
-  let mensaje = `🧁 *NUEVO PEDIDO - ${CONFIG.nombreTienda.toUpperCase()}* 🧁\n\n`;
-  mensaje += `👤 *Cliente:* ${c.nombre.trim()}\n`;
-  mensaje += `📅 *Fecha de entrega:* ${c.fecha || "(no especificada)"}\n`;
-  mensaje += `🕒 *Hora de entrega:* ${c.hora || "(no especificada)"}\n`;
-  mensaje += `🚚 *Entrega:* ${c.entrega === 'recojo' ? '🏠 Recojo en tienda' : '🛵 Envío a domicilio'}\n`;
-  if(c.entrega === 'envio') mensaje += `📍 *Dirección:* ${c.direccion.trim() || "(no especificada)"}\n`;
-  if(c.notas.trim()) mensaje += `🗒️ *Notas:* ${c.notas.trim()}\n`;
+  let mensaje = `*NUEVO PEDIDO - ${CONFIG.nombreTienda.toUpperCase()}*\n\n`;
+  mensaje += `*Cliente:* ${c.nombre.trim()}\n`;
+  mensaje += `*Fecha de entrega:* ${c.fecha || "(no especificada)"}\n`;
+  mensaje += `*Hora de entrega:* ${c.hora || "(no especificada)"}\n`;
+  mensaje += `*Entrega:* ${c.entrega === 'recojo' ? 'Recojo en tienda' : 'Envío a domicilio'}\n`;
+  if(c.entrega === 'envio') mensaje += `*Dirección:* ${c.direccion.trim() || "(no especificada)"}\n`;
+  if(c.notas.trim()) mensaje += `*Notas:* ${c.notas.trim()}\n`;
 
   // --- Detalle de productos ---
-  mensaje += `\n🛒 *DETALLE DEL PEDIDO:*\n`;
+  mensaje += `\n*DETALLE DEL PEDIDO:*\n`;
   estado.carrito.forEach((item, i) => {
-    mensaje += `\n${i + 1}. ${item.emoji} *${item.nombre}*`;
+    mensaje += `\n${i + 1}. *${item.nombre}*`;
     if(item.tipoItem === "torta"){
       mensaje += `\n${item.detalle}`;
       mensaje += `\nCantidad: ${item.cantidad} × ${formatearBs(item.precioUnitario)} = ${formatearBs(item.precioTotal)}\n`;
@@ -1178,8 +1484,8 @@ function enviarPedidoPorWhatsapp(){
   });
 
   // --- Total final ---
-  mensaje += `\n💰 *TOTAL: ${formatearBs(calcularTotalCarrito())}*\n`;
-  mensaje += `\n¡Gracias por tu pedido! 🎉🧁`;
+  mensaje += `\n*TOTAL: ${formatearBs(calcularTotalCarrito())}*\n`;
+  mensaje += `\n¡Gracias por tu pedido!`;
 
   const url = `https://wa.me/${CONFIG.numeroWhatsapp}?text=${encodeURIComponent(mensaje)}`;
   window.open(url, "_blank");
